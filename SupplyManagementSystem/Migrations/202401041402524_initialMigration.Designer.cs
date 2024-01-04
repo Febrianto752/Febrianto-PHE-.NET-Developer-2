@@ -13,7 +13,7 @@ namespace SupplyManagementSystem.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202401041216000_initialMigration"; }
+            get { return "202401041402524_initialMigration"; }
         }
         
         string IMigrationMetadata.Source

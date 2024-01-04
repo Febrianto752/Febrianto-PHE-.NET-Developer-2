@@ -148,9 +148,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202401041216000_initialMigration.cs" />
-    <Compile Include="Migrations\202401041216000_initialMigration.designer.cs">
-      <DependentUpon>202401041216000_initialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\202401041402353_InitialCreate.cs" />
+    <Compile Include="Migrations\202401041402353_InitialCreate.designer.cs">
+      <DependentUpon>202401041402353_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202401041402524_initialMigration.cs" />
+    <Compile Include="Migrations\202401041402524_initialMigration.designer.cs">
+      <DependentUpon>202401041402524_initialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -215,6 +219,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_FlashMessage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -248,8 +253,11 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202401041216000_initialMigration.resx">
-      <DependentUpon>202401041216000_initialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202401041402353_InitialCreate.resx">
+      <DependentUpon>202401041402353_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202401041402524_initialMigration.resx">
+      <DependentUpon>202401041402524_initialMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

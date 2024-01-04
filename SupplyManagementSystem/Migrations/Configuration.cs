@@ -10,6 +10,7 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            ContextKey = "SupplyManagementSystem.Data.ApplicationDbContext";
         }
 
         protected override void Seed(SupplyManagementSystem.Data.ApplicationDbContext context)
