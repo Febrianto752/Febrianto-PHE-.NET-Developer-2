@@ -1,0 +1,49 @@
+﻿@model SupplyManagementSystem.ViewModels.Auth.RegisterVM
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="row justify-content-center">
+    <div class="col-sm-8 ">
+        <div class="card p-4 shadow-lg">
+            <div class="card-body">
+                <h3 class="card-title mb-5 text-center">Daftar</h3>
+                @using (Html.BeginForm("Register", "Auth", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.CreateAccountVM.Name, new { @class = "form-label" })
+                        @Html.TextBoxFor(model => model.CreateAccountVM.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CreateAccountVM.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.CreateAccountVM.Email, new { @class = "form-label" })
+                        @Html.TextBoxFor(model => model.CreateAccountVM.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CreateAccountVM.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.CreateAccountVM.Password, new { @class = "form-label" })
+                        @Html.TextBoxFor(model => model.CreateAccountVM.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CreateAccountVM.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.CreateAccountVM.NoTelp, new { @class = "form-label" })
+                        @Html.TextBoxFor(model => model.CreateAccountVM.NoTelp, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CreateAccountVM.NoTelp, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.ProfileImage, new { @class = "form-label" })
+                        @Html.TextBoxFor(model => model.ProfileImage, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProfileImage, "", new { @class = "text-danger" })
+                    </div>
+
+                    <button type="submit" class="btn btn-sm btn-primary">Daftar</button>
+                }
+               
+            </div>
+        </div>
+    </div>
+</div>
+
