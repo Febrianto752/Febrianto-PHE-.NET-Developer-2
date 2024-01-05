@@ -9,7 +9,7 @@
 
 <h2 class="text-center my-4">Daftar Proyek</h2>
 
-<partial name="_FlashMessage" />
+@Html.Partial("_FlashMessage")
 @if (role == nameof(RoleEnum.Manager) || role == nameof(RoleEnum.Admin))
 {
     @Html.ActionLink("Tambah", "Create", "Project", null, new {@class = "btn btn-sm btn-success" })
