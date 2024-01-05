@@ -1,0 +1,52 @@
+﻿@model List<SupplyManagementSystem.Models.Project>
+@using SupplyManagementSystem.Utilities.Enums
+@{
+    string username = HttpContext.Current.Request.Cookies["Username"]?.Value;
+    string accountGuid = HttpContext.Current.Request.Cookies["AccountGuid"]?.Value;
+    string role = HttpContext.Current.Request.Cookies["Role"]?.Value;
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center my-4">Daftar Proyek</h2>
+
+<partial name="_FlashMessage" />
+@if (role == nameof(RoleEnum.Manager) || role == nameof(RoleEnum.Admin))
+{
+    @Html.ActionLink("Tambah", "Create", "Project", null, new {@class = "btn btn-sm btn-success" })
+}
+
+@if (Model.Count() > 0)
+{
+    <div class="row my-5">
+        @foreach (var project in Model)
+        {
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body shadow-lg">
+                        <h5 class="card-title">@project.Name</h5>
+                        <p class="card-text">Tanggal Mulai : @project.StartDate.ToShortDateString()</p>
+                        <p class="card-text">Tanggal Selesai : @project.EndDate.ToShortDateString()</p>
+                        <a class="btn btn-sm btn-info" asp-controller="Project" asp-action="Details" asp-route-guid="@project.Guid">Details</a>
+
+                        @if (role == nameof(RoleEnum.Manager) || role == nameof(RoleEnum.Admin))
+                        {
+                            using (Html.BeginForm("Delete", "Project", new { guid = project.Guid }, FormMethod.Post, new { @class = "d-inline-block" }))
+                            {
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('apakah anda yakin?')">Hapus</button>
+                            }
+                            
+                        }
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+}
+else
+{
+    <p class="text-center">Data Proyek Kosong, silahkan tambah data proyek.</p>
+}
+
+

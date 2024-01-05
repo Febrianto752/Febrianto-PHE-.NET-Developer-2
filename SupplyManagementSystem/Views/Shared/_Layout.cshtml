@@ -39,12 +39,17 @@
                             @if (role == nameof(RoleEnum.Admin) || role == nameof(RoleEnum.Manager))
                             {
                                 <li>
-                                    @Html.ActionLink("Vendor", "Index", "Vendor", new { area = "" }, new { @class = "nav-link text-dark" })
+                                    @Html.ActionLink("Vendor", "Index", "Vendor", new { area = "" }, new { @class = "text-dark dropdown-item" })
 
                                 </li>
+                                <li>
+                                    @Html.ActionLink("Proyek", "Index", "Project", new { area = "" }, new { @class = "text-dark dropdown-item" })
+
+                                </li>
+
                             }
 
-                            @*<li><a class="dropdown-item" asp-controller="Project" asp-action="Index">Proyek</a></li>*@
+
                         </ul>
 
                     </li>
