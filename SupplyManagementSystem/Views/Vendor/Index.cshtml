@@ -29,7 +29,8 @@
                 <td>@vendor.Account.NoTelp</td>
                 <td>@(GetNameHandler.GetVendorStatusName(vendor.Status))</td>
                 <td>
-                    <a asp-action="details" asp-route-guid="@vendor.Guid" class="btn btn-sm btn-info m-1">Details</a>
+                    @Html.ActionLink("Details", "Details", "Vendor", new { guid = vendor.Guid } , new {@class = "btn btn-sm btn-info m-1" })
+                  
                     @if (User.IsInRole(nameof(RoleEnum.Admin)) && vendor.Status == VendorStatusEnum.Pending)
                     {
                         <form method="post" asp-action="ApproveByAdmin" asp-route-guid="@vendor.Guid">

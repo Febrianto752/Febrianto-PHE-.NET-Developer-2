@@ -1,6 +1,7 @@
 ﻿using SupplyManagementSystem.Data;
 using SupplyManagementSystem.Repositories;
 using SupplyManagementSystem.Repositories.IRepositories;
+using System;
 using System.Web.Mvc;
 
 namespace SupplyManagementSystem.Controllers
@@ -22,6 +23,20 @@ namespace SupplyManagementSystem.Controllers
         {
             var vendors = _vendorRepository.GetAll(includeProperties: "Account");
             return View(vendors);
+        }
+
+        [HttpGet]
+        public ActionResult Details(Guid guid)
+        {
+            var vendor = _vendorRepository.Get(v => v.Guid == guid, includeProperties: "Account");
+
+            if (vendor == null)
+            {
+                TempData["Error"] = "Data not found";
+                return RedirectToAction("Index");
+            }
+
+            return View(vendor);
         }
     }
 }
