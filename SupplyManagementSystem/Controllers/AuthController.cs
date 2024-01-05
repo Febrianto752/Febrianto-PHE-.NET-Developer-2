@@ -8,6 +8,7 @@ using SupplyManagementSystem.ViewModels.Auth;
 using System;
 using System.IO;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace SupplyManagementSystem.Controllers
 {
@@ -24,10 +25,47 @@ namespace SupplyManagementSystem.Controllers
             _vendorRepository = new VendorRepository(_db);
         }
 
-
+        [HttpGet]
         public ActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(LoginVM loginVM)
+        {
+            var account = _accountRepository.Get(a => a.Email == loginVM.Email);
+
+            if (account == null)
+            {
+                TempData["Error"] = "email atau password salah";
+            }
+
+            var validationPassword = HashingHandler.ValidatePassword(loginVM.Password, account.Password);
+
+            if (validationPassword)
+            {
+                Session["Username"] = account.Name;
+                Session["AccountGuid"] = account.Guid;
+                Session["Role"] = account.Role;
+                FormsAuthentication.SetAuthCookie(account.Email, false);
+                return RedirectToAction("Index", "Home");
+
+            }
+
+            TempData["Error"] = "email atau password salah";
+            return View(loginVM);
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon();
+            return RedirectToAction("Login", "Auth");
         }
 
         [HttpGet]

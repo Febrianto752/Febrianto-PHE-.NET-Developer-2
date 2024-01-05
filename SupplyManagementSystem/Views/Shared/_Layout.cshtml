@@ -43,15 +43,18 @@
                 <ul class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        if (User.IsInRole(nameof(RoleEnum.Vendor)))
+                        if (Session["Role"].ToString() == nameof(RoleEnum.Vendor))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark">Edit Profile</a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Keluar</a>
-                        </li>
+                    
+                                       
+                    <li class="nav-item">
+                        @Html.ActionLink("Keluar", "Logout", "Auth", new { area = "" }, new { @class = "nav-link" })
+                    
+                    </li>
 
 
                     }
@@ -68,8 +71,9 @@
         </div>
     </nav>
     <div class="container body-content">
+
         @RenderBody()
-        
+
     </div>
 
     @Scripts.Render("~/bundles/jquery")
