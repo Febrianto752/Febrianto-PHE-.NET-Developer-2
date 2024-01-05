@@ -1,8 +1,9 @@
 ﻿@{
+    string username = HttpContext.Current.Request.Cookies["Username"]?.Value;
     ViewBag.Title = "Home Page";
 }
 
 <main>
-    <h2 class="text-center">Welcome @Session["Username"]</h2>
+    <h2 class="text-center">Welcome @username</h2>
 
 </main>

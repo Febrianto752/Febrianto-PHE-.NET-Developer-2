@@ -1,5 +1,11 @@
 ﻿@using SupplyManagementSystem.Utilities.Enums
 
+@{ 
+    string username = HttpContext.Current.Request.Cookies["Username"]?.Value;
+    string accountGuid = HttpContext.Current.Request.Cookies["AccountGuid"]?.Value;
+    string role = HttpContext.Current.Request.Cookies["Role"]?.Value;
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,10 +36,14 @@
                             Manajemen
                         </a>
                         <ul class="dropdown-menu">
-                            <li>
-                                @Html.ActionLink("Vendor", "Index", "Vendor", new { area = "" }, new { @class = "nav-link text-dark" })
+                            @if (role == nameof(RoleEnum.Admin) || role == nameof(RoleEnum.Manager))
+                            {
+                                <li>
+                                    @Html.ActionLink("Vendor", "Index", "Vendor", new { area = "" }, new { @class = "nav-link text-dark" })
 
-                            </li>
+                                </li>
+                            }
+
                             @*<li><a class="dropdown-item" asp-controller="Project" asp-action="Index">Proyek</a></li>*@
                         </ul>
 
@@ -43,7 +53,7 @@
                 <ul class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        if (Session["Role"].ToString() == nameof(RoleEnum.Vendor))
+                        if (role == nameof(RoleEnum.Vendor))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark">Edit Profile</a>
@@ -70,6 +80,7 @@
             </div>
         </div>
     </nav>
+
     <div class="container body-content">
 
         @RenderBody()

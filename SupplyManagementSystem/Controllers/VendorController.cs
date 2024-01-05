@@ -1,6 +1,7 @@
 ﻿using SupplyManagementSystem.Data;
 using SupplyManagementSystem.Repositories;
 using SupplyManagementSystem.Repositories.IRepositories;
+using SupplyManagementSystem.Utilities.Enums;
 using System;
 using System.IO;
 using System.Web.Mvc;
@@ -86,7 +87,40 @@ namespace SupplyManagementSystem.Controllers
             TempData["Error"] = "Gagal menghapus data vendor";
             return RedirectToAction("Index");
 
+        }
 
+        [HttpPost]
+        public ActionResult ApproveByAdmin(Guid guid)
+        {
+            var vendor = _vendorRepository.Get(v => v.Guid == guid, includeProperties: "Account");
+
+            if (vendor == null)
+            {
+                TempData["Error"] = "Data Not Found";
+            }
+
+            TempData["Success"] = $"Vendor {vendor.Account.Name} disetujui bergabung oleh admin";
+            vendor.Status = VendorStatusEnum.ApproveByAdmin;
+            _vendorRepository.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult ApproveByManager(Guid guid)
+        {
+            var vendor = _vendorRepository.Get(v => v.Guid == guid, includeProperties: "Account");
+
+            if (vendor == null)
+            {
+                TempData["Error"] = "Data Not Found";
+            }
+
+            TempData["Success"] = $"Vendor {vendor.Account.Name} disetujui bergabung oleh Manager";
+            vendor.Status = VendorStatusEnum.Accepted;
+            _vendorRepository.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

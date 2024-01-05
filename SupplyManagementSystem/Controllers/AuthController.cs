@@ -7,6 +7,7 @@ using SupplyManagementSystem.Utilities.Enums;
 using SupplyManagementSystem.ViewModels.Auth;
 using System;
 using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -49,9 +50,34 @@ namespace SupplyManagementSystem.Controllers
 
             if (validationPassword)
             {
-                Session["Username"] = account.Name;
-                Session["AccountGuid"] = account.Guid;
-                Session["Role"] = account.Role;
+                //Session["Username"] = account.Name;
+                //Session["AccountGuid"] = account.Guid;
+                //Session["Role"] = account.Role;
+                // Membuat objek HttpCookie
+                var username = new HttpCookie("Username");
+                username.HttpOnly = true;
+
+                var accountGuid = new HttpCookie("AccountGuid");
+                accountGuid.HttpOnly = true;
+
+                var role = new HttpCookie("Role");
+                role.HttpOnly = true;
+
+
+                // Menentukan nilai cookie
+                username.Value = account.Name;
+                accountGuid.Value = account.Guid.ToString();
+                role.Value = account.Role;
+
+                // Menentukan propertis lainnya seperti path, domain, expires, dll.
+                username.Expires = DateTime.Now.AddHours(1);
+                accountGuid.Expires = DateTime.Now.AddHours(1);
+                role.Expires = DateTime.Now.AddHours(1);
+
+                // Menambahkan username ke koleksi Response Cookies
+                Response.Cookies.Add(username);
+                Response.Cookies.Add(accountGuid);
+                Response.Cookies.Add(role);
                 FormsAuthentication.SetAuthCookie(account.Email, false);
                 return RedirectToAction("Index", "Home");
 
@@ -65,6 +91,18 @@ namespace SupplyManagementSystem.Controllers
         {
             FormsAuthentication.SignOut();
             Session.Abandon();
+            HttpCookie username = new HttpCookie("Username");
+            username.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(username);
+
+            HttpCookie accountGuid = new HttpCookie("AccountGuid");
+            accountGuid.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(accountGuid);
+
+            HttpCookie role = new HttpCookie("Role");
+            role.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(role);
+
             return RedirectToAction("Login", "Auth");
         }
 

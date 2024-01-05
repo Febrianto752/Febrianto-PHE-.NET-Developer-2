@@ -2,8 +2,13 @@
 @using SupplyManagementSystem.Utilities.Handlers
 @using SupplyManagementSystem.Utilities.Enums
 @{
+    string username = HttpContext.Current.Request.Cookies["Username"]?.Value;
+    string accountGuid = HttpContext.Current.Request.Cookies["AccountGuid"]?.Value;
+    string role = HttpContext.Current.Request.Cookies["Role"]?.Value;
     ViewBag.Title = "Index";
 }
+
+
 
 @Html.Partial("_FlashMessage")
 
@@ -33,24 +38,24 @@
                 <td>
                     @Html.ActionLink("Details", "Details", "Vendor", new { guid = vendor.Guid }, new { @class = "btn btn-sm btn-info m-1" })
 
-                    @if (Session["Role"].ToString() == nameof(RoleEnum.Admin) && vendor.Status == VendorStatusEnum.Pending)
+                    @if (role == nameof(RoleEnum.Admin) && vendor.Status == VendorStatusEnum.Pending)
                     {
-                        <form method="post" asp-action="ApproveByAdmin" asp-route-guid="@vendor.Guid">
-                            <input hidden asp-for="@vendor.Guid" />
+                        using (Html.BeginForm("ApproveByAdmin", "Vendor", new { guid = @vendor.Guid }, FormMethod.Post, new { @class = "d-inline-block" }))
+                        {
                             <button type="submit" class="btn btn-sm btn-success m-1">Approve</button>
-                        </form>
+                        }
                     }
 
-                    @if (Session["Role"].ToString() == nameof(RoleEnum.Manager) && vendor.Status == VendorStatusEnum.ApproveByAdmin)
+                    @if (role == nameof(RoleEnum.Manager) && vendor.Status == VendorStatusEnum.ApproveByAdmin)
                     {
-                        using (Html.BeginForm("ApproveByManager", "Vendor", new { guid = @vendor.Guid }, FormMethod.Post, new { @class = "d-inline-block", @onclick = "return confirm('apakah anda yakin?')" }))
+                        using (Html.BeginForm("ApproveByManager", "Vendor", new { guid = @vendor.Guid }, FormMethod.Post, new { @class = "d-inline-block" }))
                         {
                             <button type="submit" class="btn btn-sm btn-success">Approve</button>
                         }
                     }
                     @using (Html.BeginForm("Delete", "Vendor", new { guid = @vendor.Guid }, FormMethod.Post, new { @class = "d-inline-block", @onclick = "return confirm('apakah anda yakin?')" }))
                     {
-                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                        <button type="submit" class="btn btn-sm btn-danger m-1">Hapus</button>
                     }
 
                 </td>
