@@ -145,6 +145,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Data\ApplicationDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -173,7 +174,8 @@
     <Compile Include="Utilities\Enums\RoleEnum.cs" />
     <Compile Include="Utilities\Enums\TenderStatusEnum.cs" />
     <Compile Include="Utilities\Enums\VendorStatusEnum.cs" />
-    <Compile Include="Utilities\HashingHandler.cs" />
+    <Compile Include="Utilities\Handlers\GetNameHandler.cs" />
+    <Compile Include="Utilities\Handlers\HashingHandler.cs" />
     <Compile Include="ViewModels\Account\CreateAccountVM.cs" />
     <Compile Include="ViewModels\Auth\LoginVM.cs" />
     <Compile Include="ViewModels\Auth\RegisterVM.cs" />
@@ -231,6 +233,7 @@
     <Content Include="Views\Shared\_FlashMessage.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
     <Content Include="Views\Auth\Register.cshtml" />
+    <Content Include="Views\Vendor\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
