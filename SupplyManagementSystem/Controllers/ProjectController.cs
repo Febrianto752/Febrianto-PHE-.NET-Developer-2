@@ -3,12 +3,14 @@ using SupplyManagementSystem.Models;
 using SupplyManagementSystem.Repositories;
 using SupplyManagementSystem.Repositories.IRepositories;
 using SupplyManagementSystem.ViewModels.Project;
+using SupplyManagementSystem.ViewModels.ProjectTender;
 using System;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace SupplyManagementSystem.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly IAccountRepository _accountRepository;
@@ -78,6 +80,59 @@ namespace SupplyManagementSystem.Controllers
             }
 
             return View(createProjectVM);
+        }
+
+        [HttpGet]
+        public ActionResult Details(Guid guid)
+        {
+            var project = _projectRepository.Get(v => v.Guid == guid);
+
+
+            if (project == null)
+            {
+                TempData["Error"] = "Data not found";
+                return RedirectToAction("Index");
+            }
+
+            var projectDetails = new ProjectDetailsVM();
+
+            projectDetails.ProjectGuid = project.Guid;
+            projectDetails.ProjectName = project.Name;
+            projectDetails.Description = project.Description;
+            projectDetails.Description = project.Description;
+            projectDetails.StartDate = project.StartDate;
+            projectDetails.EndDate = project.EndDate;
+
+
+            var tendersByProject = _projectTenderRepository.GetAll().Where(pt => pt.ProjectGuid == project.Guid).ToList();
+
+            if (tendersByProject != null)
+            {
+                var vendors = _vendorRepository.GetAll();
+                var accounts = _accountRepository.GetAll();
+
+                projectDetails.VendorParticipants = tendersByProject.Select(tp =>
+                {
+
+                    var vendor = vendors.FirstOrDefault(v => v.Guid == tp.VendorGuid);
+                    var vendorAccount = accounts.FirstOrDefault(a => a.Guid == vendor.AccountGuid);
+
+                    var vendorParticiapnt = new VendorParticipantVM()
+                    {
+                        ProjectTenderGuid = tp.Guid,
+                        VendorName = vendorAccount.Name,
+                        BusinessField = vendor.BusinessField,
+                        TypeCompany = vendor.TypeCompany,
+
+                    };
+
+                    return vendorParticiapnt;
+
+
+                }).ToList();
+            }
+
+            return View(projectDetails);
         }
     }
 }

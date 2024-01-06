@@ -26,7 +26,8 @@
                         <h5 class="card-title">@project.Name</h5>
                         <p class="card-text">Tanggal Mulai : @project.StartDate.ToShortDateString()</p>
                         <p class="card-text">Tanggal Selesai : @project.EndDate.ToShortDateString()</p>
-                        <a class="btn btn-sm btn-info" asp-controller="Project" asp-action="Details" asp-route-guid="@project.Guid">Details</a>
+                        @Html.ActionLink("Details", "Details", "Project", new {guid = project.Guid}, new {@class = "btn btn-sm btn-info"})
+
 
                         @if (role == nameof(RoleEnum.Manager) || role == nameof(RoleEnum.Admin))
                         {

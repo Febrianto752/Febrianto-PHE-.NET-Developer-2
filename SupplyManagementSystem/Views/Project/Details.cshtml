@@ -1,0 +1,97 @@
+﻿@model SupplyManagementSystem.ViewModels.Project.ProjectDetailsVM
+@using SupplyManagementSystem.Utilities.Enums
+@{
+
+    string username = HttpContext.Current.Request.Cookies["Username"]?.Value;
+    string accountGuid = HttpContext.Current.Request.Cookies["AccountGuid"]?.Value;
+    string role = HttpContext.Current.Request.Cookies["Role"]?.Value;
+    ViewBag.Title = "Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-sm-8 ">
+        @Html.Partial("_FlashMessage")
+        
+        @Html.ActionLink("<< Back", "Index", "Project", null, new {@class = "btn btn-sm btn-info mb-3" })
+       
+
+        @if (role == nameof(RoleEnum.Manager) || role == nameof(RoleEnum.Admin))
+        {
+            @Html.ActionLink("Edit", "Edit", "Project", new {guid = Model.ProjectGuid}, new {@class = "btn btn-sm btn-warning mb-3" })
+
+        }
+
+        
+        <div class="card p-4 shadow-lg rounded">
+            <div class="card-body">
+                <h3 class="card-title mb-5 text-center">Detail Proyek</h3>
+
+                <div class="mb-3">
+                    <label class="form-label"><b>Nama : </b></label>
+                    @Html.TextBoxFor(model => model.ProjectName, new {@class = "form-control", @disabled=true})
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><b>Deskripsi : </b></label>
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @disabled = true })
+                    <textarea class="form-control" asp-for="Description" disabled></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><b>Tanggal Mulai : </b></label>
+
+                <input type="text" value="@Model.StartDate.ToShortDateString()" class="form-control" disabled/>
+                    
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label"><b>Tanggal Selesai (Perkiraan) : </b></label>
+                    <input type="text" value="@Model.EndDate.ToShortDateString()" class="form-control" disabled />
+                </div>
+
+
+                @if (role == nameof(RoleEnum.Manager) || role == nameof(RoleEnum.Admin))
+                {
+                    <hr />
+                    <h3 class="text-center my-3">Vendors</h3>
+                    if (Model.VendorParticipants.Count() > 0)
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Jenis Perusahaan</th>
+                                    <th scope="col">Bidang Usaha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var i = 0;
+                                }
+                                @foreach (var vendorParticipant in Model.VendorParticipants)
+                                {
+                                    <tr>
+                                        <th scope="row">@(i++)</th>
+                                        <td>@vendorParticipant.VendorName</td>
+                                        <td>@vendorParticipant.TypeCompany</td>
+                                        <td>@vendorParticipant.BusinessField</td>
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-center">Belum ada vendor yang daftar.</p>
+                    }
+
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
