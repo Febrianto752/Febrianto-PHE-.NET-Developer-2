@@ -134,5 +134,48 @@ namespace SupplyManagementSystem.Controllers
 
             return View(projectDetails);
         }
+
+        [HttpGet]
+        public ActionResult Edit(Guid guid)
+        {
+            var project = _projectRepository.Get(p => p.Guid == guid);
+
+            if (project == null)
+            {
+                TempData["Error"] = "Data not found";
+                return RedirectToAction("Index");
+            }
+            //project.StartDate = project.StartDate.ToString()
+
+            return View(project);
+
+        }
+
+        [HttpPost]
+        public ActionResult Edit(EditProjectVM editProjectVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var project = _projectRepository.Get(p => p.Guid == editProjectVM.Guid);
+
+                if (project == null)
+                {
+                    TempData["Error"] = "Data tidak ditemukan";
+                    return RedirectToAction("Index");
+                }
+
+                project.Name = editProjectVM.Name;
+                project.Description = editProjectVM.Description;
+                project.StartDate = editProjectVM.StartDate;
+                project.EndDate = editProjectVM.EndDate;
+
+                _projectRepository.SaveChanges();
+
+                TempData["Success"] = "Berhasil mengubah data project";
+                return RedirectToAction("Index");
+            }
+
+            return View(editProjectVM);
+        }
     }
 }

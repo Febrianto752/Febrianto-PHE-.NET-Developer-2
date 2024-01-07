@@ -24,9 +24,9 @@
                 <div class="card">
                     <div class="card-body shadow-lg">
                         <h5 class="card-title">@project.Name</h5>
-                        <p class="card-text">Tanggal Mulai : @project.StartDate.ToShortDateString()</p>
-                        <p class="card-text">Tanggal Selesai : @project.EndDate.ToShortDateString()</p>
-                        @Html.ActionLink("Details", "Details", "Project", new {guid = project.Guid}, new {@class = "btn btn-sm btn-info"})
+                        <p class="card-text">Tanggal Mulai : @project.StartDate.ToString("dddd, dd-MMM-yyyy")</p>
+                        <p class="card-text">Tanggal Selesai : @project.EndDate.ToString("dddd, dd-MMM-yyyy")</p>
+                        @Html.ActionLink("Details", "Details", "Project", new { guid = project.Guid }, new { @class = "btn btn-sm btn-info" })
 
 
                         @if (role == nameof(RoleEnum.Manager) || role == nameof(RoleEnum.Admin))
@@ -35,7 +35,7 @@
                             {
                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('apakah anda yakin?')">Hapus</button>
                             }
-                            
+
                         }
 
                     </div>
