@@ -177,5 +177,23 @@ namespace SupplyManagementSystem.Controllers
 
             return View(editProjectVM);
         }
+
+        [HttpPost]
+        public ActionResult Delete(Guid guid)
+        {
+            var project = _projectRepository.Get(p => p.Guid == guid);
+
+            if (project == null)
+            {
+                TempData["Error"] = "Data tidak ditemukan";
+                return RedirectToAction("Index");
+            }
+
+            _projectRepository.Delete(project);
+
+            TempData["Success"] = "Berhasil menghapus data project";
+
+            return RedirectToAction("Index");
+        }
     }
 }
