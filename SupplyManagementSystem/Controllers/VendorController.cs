@@ -2,6 +2,7 @@
 using SupplyManagementSystem.Repositories;
 using SupplyManagementSystem.Repositories.IRepositories;
 using SupplyManagementSystem.Utilities.Enums;
+using SupplyManagementSystem.ViewModels.Vendor;
 using System;
 using System.IO;
 using System.Web.Mvc;
@@ -121,6 +122,77 @@ namespace SupplyManagementSystem.Controllers
             _vendorRepository.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult EditProfile()
+        {
+            var email = User.Identity.Name;
+            var vendorAccount = _accountRepository.Get(a => a.Email == email);
+
+            if (vendorAccount == null)
+            {
+                TempData["Error"] = "Data tidak ditemukan";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var vendor = _vendorRepository.Get(v => v.AccountGuid == vendorAccount.Guid);
+
+            if (vendor == null)
+            {
+                TempData["Error"] = "Data tidak ditemukan";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var vendorProfile = new EditProfileVendorVM()
+            {
+                BusinessField = vendor.BusinessField,
+                TypeCompany = vendor.TypeCompany,
+                VendorGuid = vendor.Guid,
+                Status = vendor.Status,
+                VendorName = vendorAccount.Name
+            };
+
+            return View(vendorProfile);
+        }
+
+        [HttpPost]
+        public ActionResult EditProfile(EditProfileVendorVM editProfileVendorVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var vendor = _vendorRepository.Get(v => v.Guid == editProfileVendorVM.VendorGuid);
+                if (vendor == null)
+                {
+                    TempData["Error"] = "data tidak ditemukan";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                try
+                {
+                    vendor.BusinessField = editProfileVendorVM.BusinessField ?? "";
+                    vendor.TypeCompany = editProfileVendorVM.TypeCompany ?? "";
+                    vendor.ModifiedDate = DateTime.Now;
+
+                    _vendorRepository.SaveChanges();
+
+                    var accountVendor = _accountRepository.Get(a => a.Guid == vendor.AccountGuid);
+
+                    accountVendor.Name = editProfileVendorVM.VendorName;
+                    _accountRepository.SaveChanges();
+
+                    TempData["Success"] = "Berhasil mengubah data profile";
+                    return RedirectToAction("EditProfile", "Vendor");
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = "Terjadi kesalahan di server";
+                    return RedirectToAction("EditProfile", "Vendor");
+
+                }
+            }
+
+            return View(editProfileVendorVM);
         }
     }
 }

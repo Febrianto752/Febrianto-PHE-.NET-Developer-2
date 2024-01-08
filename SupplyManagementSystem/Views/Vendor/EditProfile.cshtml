@@ -1,0 +1,55 @@
+﻿@model SupplyManagementSystem.ViewModels.Vendor.EditProfileVendorVM
+@using SupplyManagementSystem.Utilities.Enums
+@{
+    ViewBag.Title = "EditProfile";
+}
+
+<div class="row justify-content-center">
+    <div class="col-sm-8 ">
+        @Html.ActionLink("<< Back", "Index", "Home", null, new {@class = "btn btn-sm btn-info mb-3"})
+        @Html.Partial("_FlashMessage")
+        <div class="card p-4 shadow-lg rounded">
+            <div class="card-body">
+                <h3 class="card-title mb-5 text-center">Ubah Profile</h3>
+
+                @using (Html.BeginForm("EditProfile", "Vendor", null, FormMethod.Post, null))
+                {
+                    @Html.TextBoxFor(model => model.VendorGuid, new { @hidden = true })
+                    @Html.TextBoxFor(model => model.Status, new { @hidden = true })
+
+                    <div class="mb-3">
+                        <label asp-for="VendorName" class="form-label">Name</label>
+                        @Html.TextBoxFor(model => model.VendorName, new { @class = "form-control", @required = true })
+                    </div>
+
+                    if (Model.Status == VendorStatusEnum.Accepted)
+                    {
+                        <div class="mb-3">
+                            <label asp-for="TypeCompany" class="form-label">Jenis Perusahaan</label>
+                            @Html.TextBoxFor(model => model.TypeCompany, new { @class = "form-control", @required = true })
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="BusinessField" class="form-label">Bidang Usaha</label>
+                            @Html.TextBoxFor(model => model.BusinessField, new { @class = "form-control", @required = true })
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(model => model.TypeCompany, new { @hidden = true })
+                        @Html.TextBoxFor(model => model.BusinessField, new { @hidden = true })
+
+                    }
+
+
+
+                    <button class="btn btn-primary mt-4">Ubah</button>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

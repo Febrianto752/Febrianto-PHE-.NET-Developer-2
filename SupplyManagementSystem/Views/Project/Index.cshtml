@@ -1,15 +1,34 @@
 ﻿@model List<SupplyManagementSystem.Models.Project>
 @using SupplyManagementSystem.Utilities.Enums
 @using System.Globalization
+@using SupplyManagementSystem.Utilities.Handlers
 @{
     string username = HttpContext.Current.Request.Cookies["Username"]?.Value;
     string accountGuid = HttpContext.Current.Request.Cookies["AccountGuid"]?.Value;
     string role = HttpContext.Current.Request.Cookies["Role"]?.Value;
     var culture = new CultureInfo("id-ID");
+
+    var vendorStatus = ViewData["VendorStatus"] ?? "";
+    var businessField = ViewData["BusinessField"] ?? "";
+
+
     ViewBag.Title = "Index";
 }
 
 <h2 class="text-center my-4">Daftar Proyek</h2>
+
+@if (role == nameof(RoleEnum.Vendor))
+{
+    if (vendorStatus != GetNameHandler.GetVendorStatusName(VendorStatusEnum.Accepted))
+    {
+        <p class="text-danger text-center">Anda belum bisa mengikuti proyek, Akun anda sedang dalam proses verifikasi!</p>
+    }
+    else if (vendorStatus == GetNameHandler.GetVendorStatusName(VendorStatusEnum.Accepted) && businessField == "")
+    {
+        <p class="text-danger text-center">Anda belum bisa mengikuti proyek, silakan lengkapi data profile!</p>
+    }
+}
+
 
 @Html.Partial("_FlashMessage")
 @if (role == nameof(RoleEnum.Manager) || role == nameof(RoleEnum.Admin))
@@ -38,6 +57,18 @@
                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('apakah anda yakin?')">Hapus</button>
                             }
 
+                        }
+
+                        @if (role == nameof(RoleEnum.Vendor))
+                        {
+                            if (vendorStatus == GetNameHandler.GetVendorStatusName(VendorStatusEnum.Accepted) && businessField != "")
+                            {
+                                <a href="#" class="btn btn-primary btn-sm">Ikuti</a>
+                            }
+                            else
+                            {
+                                <a href="#" class="btn btn-primary btn-sm disabled">Ikuti</a>
+                            }
                         }
 
                     </div>

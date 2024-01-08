@@ -44,6 +44,7 @@ namespace SupplyManagementSystem.Controllers
             if (account == null)
             {
                 TempData["Error"] = "email atau password salah";
+                return RedirectToAction("Login");
             }
 
             var validationPassword = HashingHandler.ValidatePassword(loginVM.Password, account.Password);

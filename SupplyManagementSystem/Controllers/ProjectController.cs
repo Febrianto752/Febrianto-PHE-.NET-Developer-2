@@ -2,6 +2,8 @@
 using SupplyManagementSystem.Models;
 using SupplyManagementSystem.Repositories;
 using SupplyManagementSystem.Repositories.IRepositories;
+using SupplyManagementSystem.Utilities.Enums;
+using SupplyManagementSystem.Utilities.Handlers;
 using SupplyManagementSystem.ViewModels.Project;
 using SupplyManagementSystem.ViewModels.ProjectTender;
 using System;
@@ -32,6 +34,17 @@ namespace SupplyManagementSystem.Controllers
         public ActionResult Index()
         {
             var projects = _projectRepository.GetAll().ToList();
+
+            var role = Request.Cookies["Role"]?.Value;
+
+            if (role == nameof(RoleEnum.Vendor))
+            {
+                var accountGuid = Guid.Parse(Request.Cookies["AccountGuid"]?.Value);
+                var vendor = _vendorRepository.Get(v => v.AccountGuid == accountGuid);
+                ViewData["VendorStatus"] = GetNameHandler.GetVendorStatusName(vendor.Status);
+                ViewData["BusinessField"] = vendor.BusinessField;
+            }
+
             return View(projects);
         }
 

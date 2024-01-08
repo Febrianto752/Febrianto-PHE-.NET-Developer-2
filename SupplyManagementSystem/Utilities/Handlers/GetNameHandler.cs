@@ -11,5 +11,7 @@ namespace SupplyManagementSystem.Utilities.Handlers
             if (vendorStatus == VendorStatusEnum.ApproveByAdmin) return "Disetujui Admin";
             else return "Ditolak";
         }
+
+
     }
 }

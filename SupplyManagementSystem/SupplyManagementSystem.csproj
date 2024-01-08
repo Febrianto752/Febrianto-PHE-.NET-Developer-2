@@ -146,6 +146,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\ProjectTenderController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Data\ApplicationDbContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -188,6 +189,7 @@
     <Compile Include="ViewModels\Project\CreateProjectVM.cs" />
     <Compile Include="ViewModels\Project\EditProjectVM.cs" />
     <Compile Include="ViewModels\Project\ProjectDetailsVM.cs" />
+    <Compile Include="ViewModels\Vendor\EditProfileVendorVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -248,10 +250,12 @@
     <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Project\Details.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
+    <Content Include="Views\Vendor\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Static\Images\" />
+    <Folder Include="Views\ProjectTender\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
