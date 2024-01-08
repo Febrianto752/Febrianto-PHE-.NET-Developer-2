@@ -72,8 +72,9 @@
                                 }
                                 @foreach (var vendorParticipant in Model.VendorParticipants)
                                 {
+                                    i++;
                                     <tr>
-                                        <th scope="row">@(i++)</th>
+                                        <th scope="row">@(i)</th>
                                         <td>@vendorParticipant.VendorName</td>
                                         <td>@vendorParticipant.TypeCompany</td>
                                         <td>@vendorParticipant.BusinessField</td>

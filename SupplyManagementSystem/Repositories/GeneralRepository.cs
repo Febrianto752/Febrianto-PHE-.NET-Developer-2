@@ -20,6 +20,7 @@ namespace SupplyManagementSystem.Repositories
         {
             try
             {
+
                 _context.Set<TEntity>().Add(entity);
                 _context.SaveChanges();
                 return entity;

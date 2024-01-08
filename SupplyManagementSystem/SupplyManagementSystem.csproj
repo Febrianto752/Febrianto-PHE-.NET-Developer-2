@@ -180,11 +180,13 @@
     <Compile Include="Utilities\Enums\RoleEnum.cs" />
     <Compile Include="Utilities\Enums\TenderStatusEnum.cs" />
     <Compile Include="Utilities\Enums\VendorStatusEnum.cs" />
+    <Compile Include="Utilities\Handlers\CheckingHandler.cs" />
     <Compile Include="Utilities\Handlers\GetNameHandler.cs" />
     <Compile Include="Utilities\Handlers\HashingHandler.cs" />
     <Compile Include="ViewModels\Account\CreateAccountVM.cs" />
     <Compile Include="ViewModels\Auth\LoginVM.cs" />
     <Compile Include="ViewModels\Auth\RegisterVM.cs" />
+    <Compile Include="ViewModels\ProjectTender\ProjectTenderVM.cs" />
     <Compile Include="ViewModels\ProjectTender\VendorParticipantVM.cs" />
     <Compile Include="ViewModels\Project\CreateProjectVM.cs" />
     <Compile Include="ViewModels\Project\EditProjectVM.cs" />

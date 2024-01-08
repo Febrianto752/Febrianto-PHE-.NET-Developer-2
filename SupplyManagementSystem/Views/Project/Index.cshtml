@@ -8,8 +8,9 @@
     string role = HttpContext.Current.Request.Cookies["Role"]?.Value;
     var culture = new CultureInfo("id-ID");
 
-    var vendorStatus = ViewData["VendorStatus"] ?? "";
-    var businessField = ViewData["BusinessField"] ?? "";
+    string vendorStatus = ViewData["VendorStatus"]?.ToString() ?? "";
+    string businessField = ViewData["BusinessField"]?.ToString() ?? "";
+    string vendorGuid = ViewData["VendorGuid"]?.ToString() ?? "";
 
 
     ViewBag.Title = "Index";
@@ -61,13 +62,29 @@
 
                         @if (role == nameof(RoleEnum.Vendor))
                         {
-                            if (vendorStatus == GetNameHandler.GetVendorStatusName(VendorStatusEnum.Accepted) && businessField != "")
+                            if (vendorStatus == GetNameHandler.GetVendorStatusName(VendorStatusEnum.Accepted) && businessField != "" && !CheckingHandler.IsVendorJoinedProject(project.ProjectTenders, Guid.Parse(vendorGuid)))
                             {
-                                <a href="#" class="btn btn-primary btn-sm">Ikuti</a>
+                                using (Html.BeginForm("Create", "ProjectTender", null, FormMethod.Post, new { @class = "d-inline-block" }))
+                                {
+                                    <input type="hidden" name="ProjectGuid" value="@project.Guid" />
+                                    <input type="hidden" name="VendorGuid" value="@vendorGuid" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Ikuti</button>
+                                }
+
+                            }
+                            else if (CheckingHandler.IsVendorJoinedProject(project.ProjectTenders, Guid.Parse(vendorGuid)))
+                            {
+                                using (Html.BeginForm("Delete", "ProjectTender", null, FormMethod.Post, new { @class = "d-inline-block" }))
+                                {
+                                    <input type="hidden" name="ProjectGuid" value="@project.Guid" />
+                                    <input type="hidden" name="VendorGuid" value="@vendorGuid" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Batal Ikut</button>
+                                }
+
                             }
                             else
                             {
-                                <a href="#" class="btn btn-primary btn-sm disabled">Ikuti</a>
+                                <a href="#" class="btn btn-sm btn-primary disabled">Ikuti</a>
                             }
                         }
 

@@ -33,7 +33,16 @@ namespace SupplyManagementSystem.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var projects = _projectRepository.GetAll().ToList();
+            var getProjects = _projectRepository.GetAll().ToList();
+            var getProjectTenders = _projectTenderRepository.GetAll().ToList();
+
+            var projects = getProjects.Select(project =>
+            {
+                var projectTenders = getProjectTenders.Where(pt => pt.ProjectGuid == project.Guid).ToList();
+                project.ProjectTenders = projectTenders;
+                return project;
+
+            }).ToList();
 
             var role = Request.Cookies["Role"]?.Value;
 
@@ -43,6 +52,9 @@ namespace SupplyManagementSystem.Controllers
                 var vendor = _vendorRepository.Get(v => v.AccountGuid == accountGuid);
                 ViewData["VendorStatus"] = GetNameHandler.GetVendorStatusName(vendor.Status);
                 ViewData["BusinessField"] = vendor.BusinessField;
+                ViewData["VendorGuid"] = vendor.Guid;
+                var tmp = CheckingHandler.IsVendorJoinedProject(projects[0].ProjectTenders, vendor.Guid);
+
             }
 
             return View(projects);
