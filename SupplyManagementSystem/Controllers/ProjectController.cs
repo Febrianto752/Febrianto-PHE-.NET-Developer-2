@@ -7,6 +7,7 @@ using SupplyManagementSystem.Utilities.Handlers;
 using SupplyManagementSystem.ViewModels.Project;
 using SupplyManagementSystem.ViewModels.ProjectTender;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -38,8 +39,16 @@ namespace SupplyManagementSystem.Controllers
 
             var projects = getProjects.Select(project =>
             {
-                var projectTenders = getProjectTenders.Where(pt => pt.ProjectGuid == project.Guid).ToList();
-                project.ProjectTenders = projectTenders;
+                if (getProjectTenders.Count() > 0)
+                {
+                    var projectTenders = getProjectTenders.Where(pt => pt.ProjectGuid == project.Guid).ToList();
+                    project.ProjectTenders = projectTenders;
+                }
+                else
+                {
+                    project.ProjectTenders = new List<ProjectTender>();
+                }
+
                 return project;
 
             }).ToList();
@@ -53,7 +62,7 @@ namespace SupplyManagementSystem.Controllers
                 ViewData["VendorStatus"] = GetNameHandler.GetVendorStatusName(vendor.Status);
                 ViewData["BusinessField"] = vendor.BusinessField;
                 ViewData["VendorGuid"] = vendor.Guid;
-                var tmp = CheckingHandler.IsVendorJoinedProject(projects[0].ProjectTenders, vendor.Guid);
+                //var tmp = CheckingHandler.IsVendorJoinedProject(projects[0].ProjectTenders, vendor.Guid);
 
             }
 

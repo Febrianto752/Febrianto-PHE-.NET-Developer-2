@@ -97,7 +97,11 @@
 }
 else
 {
-    <p class="text-center">Data Proyek Kosong, silahkan tambah data proyek.</p>
+    if (role != nameof(RoleEnum.Vendor))
+    {
+        <p class="text-center">Data Proyek Kosong, silahkan tambah data proyek.</p>
+    }
+
 }
 
 

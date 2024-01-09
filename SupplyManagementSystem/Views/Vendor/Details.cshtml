@@ -3,7 +3,7 @@
     ViewBag.Title = "Details";
 }
 
-<div class="row justify-content-center">
+<div class="row justify-content-center mb-5">
     <div class="col-sm-8 ">
         @Html.ActionLink("<< Back", "Index", "Vendor", null, new {@class = "btn btn-sm btn-info mb-3" })
  
@@ -19,12 +19,12 @@
                     <tr>
                         <td>Jenis Perusahaan</td>
                         <td class="px-2"> : </td>
-                        <td>@(Model.TypeCompany ?? "belum diisi")</td>
+                        <td>@(string.IsNullOrEmpty(Model.TypeCompany) ? "belum diisi" : Model.TypeCompany)</td>
                     </tr>
                     <tr>
                         <td>Bindang Usaha</td>
                         <td class="px-2"> : </td>
-                        <td>@(Model.BusinessField ?? "belum diisi")</td>
+                        <td>@(string.IsNullOrEmpty(Model.BusinessField) ? "belum diisi" : Model.BusinessField)</td>
                     </tr>
                     <tr>
                         <td>Email</td>
